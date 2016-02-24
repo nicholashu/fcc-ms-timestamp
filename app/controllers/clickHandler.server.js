@@ -6,7 +6,6 @@ function ClickHandler () {
 	
 	function unixToNatural(UNIX_timestamp){
 		  var a = new Date(UNIX_timestamp*100);
-		  console.log(a);
 		  var months = ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
 		  var year = a.getFullYear();
 		  var month = months[a.getMonth()];
@@ -33,16 +32,21 @@ function ClickHandler () {
 		var timestamp;
 		if (req.params.timestamp){
 			if (isNaN(Number(req.params.timestamp))){
-				timestamp = Date.parse(req.params.timestamp)/100;
-				result.unix = timestamp;
-				result.natural = req.params.timestamp;
+				if (isNaN(Date.parse(req.params.timestamp)/100)){
+					result.unix = null;
+					result.natural = null;
+				}else{
+					timestamp = Date.parse(req.params.timestamp)/100;
+					result.unix = timestamp;
+					result.natural = req.params.timestamp;
+				}
 			}else{
 				timestamp = req.params.timestamp;
 				result.unix = timestamp;
 				result.natural = unixToNatural(timestamp);
-			};
+			}
 		}else{
-			result = "error"
+			result = "error";
 		}
 		
 		
